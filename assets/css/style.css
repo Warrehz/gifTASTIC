@@ -1,0 +1,13 @@
+.buttonHolder {
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.stillImage {
+  padding-left: 30px;
+  float: left;
+}
+
+.gif-area {
+  margin-top: 50px;
+}
