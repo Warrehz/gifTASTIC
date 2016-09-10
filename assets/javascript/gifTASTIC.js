@@ -1,26 +1,32 @@
-var topics = ["darth vader", "blade runner", "cowboy bebop", "sauron"];
+var characters = ["Doctor Strange", "Hulk", "Spider-man", "Iron Man", "Captain America", "Wolverine", "Daredevil", "Thanos", "Red SKull", "Magneto", "Green Goblin", "Doctor Doom"];
 
-for (var i = 0; i < topics.length; i++) {
+function renderButtons() {
 
-  var newDiv = $("<div>");
+  for (var i = 0; i < characters.length; i++) {
 
-  var newButton = $("<button>");
+    var newDiv = $("<div>");
 
-  newButton.attr("data-topic", topics[i]);
+    var newButton = $("<button>");
 
-  newButton.attr("class", "button");
+    newButton.attr("data-topic", characters[i]);
 
-  newButton.html(topics[i]);
+    newButton.attr("class", "button btn btn-secondary btn-sm");
 
-  newDiv.attr("class", "buttonHolder");
+    newButton.html(characters[i]);
 
-  newDiv.append(newButton);
+    newDiv.attr("class", "buttonHolder");
 
-  $(".button-area").append(newDiv);
+    newDiv.append(newButton);
 
-}
+    $(".button-area").append(newDiv);
 
-$(".button").on("click", function() {
+  }
+
+  characters = [];
+
+};
+
+$(document).on("click", ".button", function() {
 
   var q = $(this).data("topic");
 
@@ -35,13 +41,19 @@ $(".button").on("click", function() {
 
         var rating = results[i].rating;
 
-        var gifDiv = $("<div class='stillImage'>");
+        var gifDiv = $("<div class='imageHolder'>");
 
         var gifRating = $("<p>").text("Rating: " + rating);
 
-        var gifImage = $("<img>");
+        var gifImage = $("<img class='comicBookCharacterImage'>");
 
         gifImage.attr("src", results[i].images.fixed_height_still.url);
+
+        gifImage.attr("data-state", "still");
+
+        gifImage.attr("data-still", results[i].images.fixed_height_still.url);
+
+        gifImage.attr("data-animate", results[i].images.fixed_height.url);
 
         gifDiv.append(gifImage);
 
@@ -53,5 +65,48 @@ $(".button").on("click", function() {
 
     });
 
+});
+
+$(document).on("click", ".comicBookCharacterImage", function() {
+
+  var state = $(this).attr("data-state");
+
+  console.log(state);
+
+  if (state == "still") {
+
+    $(this).attr("src", $(this).data("animate"));
+    $(this).attr("data-state", "animate");
+
+  } else {
+
+    $(this).attr("src", $(this).data("still"));
+    $(this).attr("data-state", "still");
+
+  }
 
 });
+
+$("#addCharacter").on("click", function() {
+
+  var character = $("#character-input").val().trim();
+
+  if(character !== "") {
+
+    characters.push(character);
+
+  } else {
+
+    alert("You need to add something in the box!");
+
+  }
+
+  $("#character-input").val("");
+
+  renderButtons();
+
+  return false;
+
+});
+
+renderButtons();
